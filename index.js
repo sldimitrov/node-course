@@ -63,39 +63,87 @@
 //   console.log('Listening to requests on port 8000')
 // })
 
-
 // Asynchronous JS: Promises and Async/Await
-const fs = require('fs');
-const superagent = require('superagent');
+// const fs = require('fs');
+// const superagent = require('superagent');
+//
+// const readFilePromise = file => new Promise((resolve, reject) => {
+//   fs.readFile(file, 'utf-8', (err, data) => {
+//     if (err) reject('File not found!');
+//     resolve(data);
+//   });
+// });
+//
+// const writeFilePromise = (file, data) => {
+//   return new Promise((resolve, reject) => {
+//     fs.writeFile(file, data, err => {
+//       if (err) reject('Could not write file!');
+//       resolve('success');
+//     });
+//   });
+// };
+//
+// const getDogPic = async() => {
+//   try {
+//     const data = await readFilePromise(`${__dirname}/dev-data/dog.txt`);
+//     console.log('Breed: ', data);
+//
+//     const res = superagent.get(`https://dog.ceo/api/breed/${data}/images/random`);
+//     const res1 = superagent.get(`https://dog.ceo/api/breed/${data}/images/random`);
+//     const res2 = superagent.get(`https://dog.ceo/api/breed/${data}/images/random`);
+//
+//     const all = await Promise.all([res, res1, res2])
+//
+//     const images = all.map(el => el.body.message)
+//
+//     console.log('images', images)
+//
+//     await writeFilePromise(`${__dirname}/dev-data/dog-img.txt`, images.join('\n'));
+//     console.log('Random dog image saved to file!');
+//   } catch (err) {
+//     console.log(err.message);
+//     throw err;
+//   }
+//
+//   return 'Doc pic fetched successfully!';
+// }
+//
+// (async() => {
+//   try {
+//     console.log('Getting dog pic...');
+//     const x = await getDogPic();
+//     console.log(x);
+//     console.log('Done getting dog pic!');
+//   } catch(err) {
+//     console.log('ERROR')
+//   }
+// })()
 
-const readFilePromise = file => new Promise((resolve, reject) => {
-  fs.readFile(file, 'utf-8', (err, data) => {
-    if (err) reject('File not found!');
-    resolve(data);
-  });
-});
+// First Take On Binary Search
+const targetValue = 4;
+const sortedArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const writeFilePromise = (file, data) => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(file, data, err => {
-      if (err) reject('Could not write file!');
-      resolve('success');
-    });
-  });
-};
+let startIndex = 0;
+let endIndex = sortedArray.length;
 
-readFilePromise(`${__dirname}/dev-data/dog.txt`)
-  .then(data => {
-    console.log('Breed: ', data);
-    return superagent.get(`https://dog.ceo/api/breed/${data}/images/random`)
-  })
-  .then(res => {
-    console.log(res.body.message);
-    return writeFilePromise(`${__dirname}/dev-data/dog-img.txt`, res.body.message);
-  })
-  .then(() => {
-    console.log('Random dog image saved to file!');
-  })
-  .catch(err => {
-    console.log(err.message);
-  })
+for (let i = 0; i <= sortedArray.length; i++) {
+  //
+  let currentArray = sortedArray.slice(startIndex, endIndex);
+  // console.log('currentArray', currentArray);
+
+  let midIndex = Math.floor(currentArray.length / 2);
+
+  const currentValue = currentArray[midIndex];
+  // console.log(`Value ${currentValue}; Index ${midIndex}`);
+
+  if (currentValue === targetValue) {
+    // console.log(`Found Target Value - ${currentValue}; On Index - ${midIndex}`);
+    break;
+  } else if (currentValue < targetValue) {
+    // console.log(`Current Value ${currentValue} is lower than ${targetValue}`);
+    startIndex = midIndex;
+  } else if (currentValue > targetValue) {
+    // console.log(`Current Value ${currentValue} is higher than ${targetValue}`);
+    endIndex = midIndex + 1;
+  }
+}
